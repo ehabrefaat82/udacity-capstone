@@ -98,7 +98,7 @@ workflows:
             - build
       - scan:
           requires:
-            - scan
+            - test
       - package:
           requires:
             - scan
