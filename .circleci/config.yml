@@ -101,7 +101,7 @@ jobs:
 workflows:
   default-workflow:
     jobs:
-      - maven/build
+      - maven/test
       - test
       - scan:
           requires:
