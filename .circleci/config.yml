@@ -9,8 +9,12 @@ jobs:
       - run:
           name: "build"
           command: "echo build"
-      - run: java --version
-      - run: mvn --version
+      - run:
+          name: "java"
+          command: "java --version"
+      - run:
+          name: "mvn"
+          command: "mvn --version"
   test:
     docker:
       - image: cimg/base:stable
