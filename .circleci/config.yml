@@ -28,7 +28,7 @@ jobs:
       - checkout
       - run:
           name: "scan"
-          command: "echo scan"
+          command: "echo TODO scan"
   package:
     docker:
       - image: cimg/base:stable
@@ -37,6 +37,7 @@ jobs:
       - run:
           name: "package"
           command: "echo package"
+      - run: docker build --tag=udacity-capstone:1.0 . -f ../Dockerfile
   push:
     docker:
       - image: cimg/base:stable
