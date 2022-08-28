@@ -11,9 +11,9 @@ jobs:
       - run:
           name: "build"
           command: "echo build"
-      - run:
-          name: "java"
-          command: "./java --version"
+#      - run:
+#          name: "java"
+#          command: "./java --version"
       - run:
           name: "mvn"
           command: "./mvn --version"
