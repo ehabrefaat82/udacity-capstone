@@ -9,7 +9,7 @@ jobs:
       - run:
           name: "build"
           command: "echo build"
-      - run: ./mvn -Dmaven.test.skip=true package
+      - run: ./mvnw -Dmaven.test.skip=true package
   test:
     docker:
       - image: cimg/base:stable
@@ -18,7 +18,7 @@ jobs:
       - run:
           name: "test"
           command: "echo test"
-      - run : ./mvn test
+      - run : ./mvnw test
   scan:
     docker:
       - image: cimg/base:stable
