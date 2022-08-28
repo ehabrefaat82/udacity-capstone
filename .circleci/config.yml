@@ -3,29 +3,29 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 jobs:
-#  build:
-#    docker:
-#      - image: cimg/openjdk:17.0.1
-#    steps:
-#      - checkout
-#      - run:
-#          name: "build"
-#          command: "echo build"
-#      - run:
-#          name: "java"
-#          command: "java --version"
-#      - run:
-#          name: "mvn"
-#          command: "mvn --version"
-#  test:
-#    docker:
-#      - image: cimg/base:stable
-#    steps:
-#      - checkout
-#      - run:
-#          name: "test"
-#          command: "echo test"
-#      - run : mvn test
+  build:
+    docker:
+      - image: cimg/openjdk:17.0.1
+    steps:
+      - checkout
+      - run:
+          name: "build"
+          command: "echo build"
+      - run:
+          name: "java"
+          command: "./java --version"
+      - run:
+          name: "mvn"
+          command: "./mvn --version"
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "test"
+          command: "echo test"
+      - run : mvn test
   scan:
     docker:
       - image: cimg/base:stable
@@ -101,8 +101,10 @@ jobs:
 workflows:
   default-workflow:
     jobs:
-      - maven/test
-      - test
+      - build
+      - test:
+          requires:
+            - build
       - scan:
           requires:
             - test
