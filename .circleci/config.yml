@@ -6,6 +6,7 @@ jobs:
       - image: cimg/openjdk:8.0.345
     steps:
       - checkout
+      - run: ls
       - run:
           name: "build"
           command: "echo build"
@@ -31,7 +32,7 @@ jobs:
           command: "echo TODO scan"
   package:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/openjdk:8.0.345
     steps:
       - checkout
       - run:
