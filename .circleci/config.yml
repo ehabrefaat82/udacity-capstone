@@ -10,11 +10,8 @@ jobs:
           name: "build"
           command: "echo build"
       - run:
-          name: "java"
-          command: "./gradlew --version"
-      - run:
-          name: "mvn"
-          command: "./mvn --version"
+          name: "build"
+          command: "mvn -B -DskipTests clean package"
   test:
     docker:
       - image: cimg/base:stable
