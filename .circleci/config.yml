@@ -1,7 +1,5 @@
 version: 2.1
 
-orbs:
-  maven: circleci/maven@0.0.12
 jobs:
   build:
     docker:
@@ -13,7 +11,7 @@ jobs:
           command: "echo build"
       - run:
           name: "java"
-          command: "ls"
+          command: "./gradlew --version"
       - run:
           name: "mvn"
           command: "./mvn --version"
