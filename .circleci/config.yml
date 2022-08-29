@@ -32,9 +32,10 @@ jobs:
             echo ">---------- TODO scan ----------<"
   package:
     docker:
-      - image: cimg/deploy:2022.08.1
+      - image: cimg/openjdk:8.0.345
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: "package"
           command: |
