@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: cimg/openjdk:8.0.345
+    working_directory: ~/project
     steps:
       - checkout
       - run:
@@ -11,7 +12,10 @@ jobs:
           command: |
             echo ">---------- build ----------<"
             mvn -B -DskipTests clean package
-            ls
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - target
   test:
     docker:
       - image: cimg/openjdk:8.0.345
@@ -37,10 +41,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - attach_workspace:
+          at: ~/project/workspace
       - run:
           name: "package"
           command: |
             echo ">---------- package ----------<"
+            ls ~/project/workspace
             docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
