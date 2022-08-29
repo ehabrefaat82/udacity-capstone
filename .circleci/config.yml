@@ -10,7 +10,6 @@ jobs:
           name: "build"
           command: |
             echo ">---------- build ----------<"
-            echo "$DOCKER_PASS"
 #            mvn -B -DskipTests clean package
   test:
     docker:
@@ -40,6 +39,7 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
+            echo "$DOCKER_PASS"
             sudo docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
