@@ -10,7 +10,8 @@ jobs:
           name: "build"
           command: |
             echo ">---------- build ----------<"
-#            mvn -B -DskipTests clean package
+            mvn -B -DskipTests clean package
+            ls
   test:
     docker:
       - image: cimg/openjdk:8.0.345
