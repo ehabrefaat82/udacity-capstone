@@ -47,7 +47,7 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
-            ls ~/project/workspace
+            ls ~/tmp/workspace/target
             docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
