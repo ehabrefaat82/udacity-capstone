@@ -48,7 +48,7 @@ jobs:
           command: |
             echo ">---------- package ----------<"
             ls ~/tmp/workspace/target
-            docker build --tag=udacity-capstone:1.0 .
+            docker build --cache-from=~/tmp/workspace --tag=udacity-capstone:1.0 .
   push:
     docker:
       - image: cimg/base:stable
