@@ -8,10 +8,9 @@ jobs:
       - checkout
       - run:
           name: "build"
-          command: "echo build"
-      - run:
-          name: "build"
-          command: "mvn -B -DskipTests clean package"
+          command: |
+            echo ">---------- build ----------<"
+            mvn -B -DskipTests clean package
   test:
     docker:
       - image: cimg/openjdk:8.0.345
@@ -19,8 +18,9 @@ jobs:
       - checkout
       - run:
           name: "test"
-          command: "echo test"
-      - run : "mvn test"
+          command: |
+            echo ">---------- test ----------<"
+            mvn test
   scan:
     docker:
       - image: cimg/base:stable
@@ -28,7 +28,8 @@ jobs:
       - checkout
       - run:
           name: "scan"
-          command: "echo TODO scan"
+          command: |
+            echo ">---------- TODO scan ----------<"
   package:
     docker:
       - image: cimg/openjdk:8.0.345
@@ -36,8 +37,9 @@ jobs:
       - checkout
       - run:
           name: "package"
-          command: "echo package"
-      - run: docker build --tag=udacity-capstone:1.0 .
+          command: |
+            echo ">---------- package ----------<"
+            docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
       - image: cimg/base:stable
