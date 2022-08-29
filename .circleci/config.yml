@@ -32,7 +32,7 @@ jobs:
             echo ">---------- TODO scan ----------<"
   package:
     docker:
-      - image: cimg/openjdk:8.0.345
+      - image: docker:17.05.0-ce-git
     steps:
       - checkout
       - setup_remote_docker
@@ -40,7 +40,6 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
-            echo "$DOCKER_PASS"
             sudo docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
