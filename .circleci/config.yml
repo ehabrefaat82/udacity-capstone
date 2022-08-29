@@ -40,7 +40,7 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
-            sudo docker build --tag=udacity-capstone:1.0 .
+            docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
       - image: cimg/base:stable
