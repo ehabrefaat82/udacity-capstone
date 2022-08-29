@@ -13,7 +13,7 @@ jobs:
             echo ">---------- build ----------<"
             mvn -B -DskipTests clean package
       - persist_to_workspace:
-          root: ~/
+          root: ~/project
           paths:
             - target
   test:
