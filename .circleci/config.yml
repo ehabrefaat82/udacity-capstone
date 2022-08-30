@@ -36,6 +36,7 @@ jobs:
   package:
     docker:
       - image: cimg/openjdk:8.0.345
+    working_directory: ~/project
     steps:
       - checkout
       - setup_remote_docker
@@ -43,22 +44,38 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
+            set -ex
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             echo $TAG
-            docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=ehabrefaat82/udacity-capstone:$TAG .
+            docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/udacity-capstone:$TAG .
+            mkdir -p build_output
+            docker save ${DOCKER_USER}/udacity-capstone:$TAG --output build_output/${CIRCLE_BUILD_NUM}.tar
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
             docker push ehabrefaat82/udacity-capstone:$TAG
+      - persist_to_workspace:
+          root: build_output
+          paths:
+            - '*.tar'
+
   push:
     docker:
       - image: cimg/openjdk:8.0.345
+    working_directory: ~/project
     steps:
+      - checkout
       - setup_remote_docker
+      - attach_workspace:
+          at: ~/project/workspace
       - run:
           name: "push to hub"
           command: |
             echo ">---------- push ----------<"
+            set -ex
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            echo $TAG
+            docker load --input build_output/${CIRCLE_BUILD_NUM}.tar
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
-            docker push ehabrefaat82/udacity-capstone:1.0.${CIRCLE_BUILD_NUM}
+            docker push ${DOCKER_USER}/udacity-capstone:$TAG
   create-infra:
     docker:
       - image: cimg/base:stable
