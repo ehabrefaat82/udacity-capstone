@@ -44,15 +44,18 @@ jobs:
           command: |
             echo ">---------- package ----------<"
             echo ${CIRCLE_BUILD_NUM}
-            docker build --build-arg build_number=${CIRCLE_BUILD_NUM} --tag=udacity-capstone:1.0 .
+            docker build --build-arg build_number=${CIRCLE_BUILD_NUM} --tag=udacity-capstone:1.0.${CIRCLE_BUILD_NUM} .
   push:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/openjdk:8.0.345
     steps:
-      - checkout
+      - setup_remote_docker
       - run:
-          name: "push"
-          command: "echo push"
+          name: "push to hub"
+          command: |
+            echo ">---------- push ----------<"
+            docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
+            docker push ehabrefaat82/udacity-capstone:1.0.${CIRCLE_BUILD_NUM}
   create-infra:
     docker:
       - image: cimg/base:stable
