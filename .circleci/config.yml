@@ -14,10 +14,6 @@ jobs:
             mvn -B -DskipTests clean package
       - store_artifacts:
           path: target/udacity-capstone-0.0.1-SNAPSHOT.jar
-      - persist_to_workspace:
-          root: ~/tmp
-          paths:
-            - target
   test:
     docker:
       - image: cimg/openjdk:8.0.345
@@ -43,13 +39,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - attach_workspace:
-          at: ~/tmp/workspace
       - run:
           name: "package"
           command: |
             echo ">---------- package ----------<"
-            docker build --tag=udacity-capstone:1.0 .
+            docker build --build-arg build_number=${CIRCLE_BUILD_NUM} --tag=udacity-capstone:1.0 .
   push:
     docker:
       - image: cimg/base:stable
