@@ -1,9 +1,8 @@
 FROM openjdk:8-alpine
 RUN apk --no-cache add curl jq
 RUN curl  'https://circleci.com/api/v1.1/project/github/ehabrefaat82/udacity-capstone/200/artifacts' \
-    | jq 'map(select(.["path"] == "target/udacity-capstone-0.0.1-SNAPSHOT.jar"))' \
-    | jq '.[0]["url"]' \
-    | xargs curl -o udacity-capstone-0.0.1-SNAPSHOT.jar \
+    | grep -o "https://[^]*" \
+    | wget --verbose  --input-file -
 RUN apk del --purge curl jq
 ENTRYPOINT ["java","-jar","/udacity-capstone-0.0.1-SNAPSHOT.jar"]
 #ARG target=target
