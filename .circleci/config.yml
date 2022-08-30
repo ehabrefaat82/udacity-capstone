@@ -45,6 +45,8 @@ jobs:
             echo ">---------- package ----------<"
             echo ${CIRCLE_BUILD_NUM}
             docker build --build-arg build_number=${CIRCLE_BUILD_NUM} --tag=udacity-capstone:1.0.${CIRCLE_BUILD_NUM} .
+            docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
+            docker push ehabrefaat82/udacity-capstone:1.0.${CIRCLE_BUILD_NUM}
   push:
     docker:
       - image: cimg/openjdk:8.0.345
