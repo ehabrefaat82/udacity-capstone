@@ -13,11 +13,11 @@ jobs:
             echo ">---------- build ----------<"
             mvn -B -DskipTests clean package
       - store_artifacts:
-          path: target/udacity-capstone-0.0.1-SNAPSHOT.jar
+          path: ~/udacity-capstone-0.0.1-SNAPSHOT.jar
       - persist_to_workspace:
-          root: ~/tmp
+          root: ~/
           paths:
-            - target
+            - udacity-capstone-0.0.1-SNAPSHOT.jar
   test:
     docker:
       - image: cimg/openjdk:8.0.345
@@ -49,9 +49,8 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
-            ls ~/tmp/workspace/target
-            mvn -B -DskipTests clean package
-            docker build --build-arg target=target --tag=udacity-capstone:1.0 .
+            ls ~/
+            docker build --tag=udacity-capstone:1.0 .
   push:
     docker:
       - image: cimg/base:stable
