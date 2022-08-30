@@ -43,6 +43,7 @@ jobs:
           name: "package"
           command: |
             echo ">---------- package ----------<"
+            echo ${CIRCLE_BUILD_NUM}
             docker build --build-arg build_number=${CIRCLE_BUILD_NUM} --tag=udacity-capstone:1.0 .
   push:
     docker:
