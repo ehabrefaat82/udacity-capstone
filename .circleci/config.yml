@@ -39,7 +39,8 @@ jobs:
     working_directory: ~/project
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: "package"
           command: |
@@ -50,8 +51,8 @@ jobs:
             docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/udacity-capstone:$TAG .
             mkdir -p build_output
             docker save ${DOCKER_USER}/udacity-capstone:$TAG --output build_output/${CIRCLE_BUILD_NUM}.tar
-            docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
-            docker push ehabrefaat82/udacity-capstone:$TAG
+#            docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
+#            docker push ehabrefaat82/udacity-capstone:$TAG
       - persist_to_workspace:
           root: build_output
           paths:
@@ -62,8 +63,9 @@ jobs:
       - image: cimg/openjdk:8.0.345
     working_directory: ~/project
     steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
       - checkout
-      - setup_remote_docker
       - attach_workspace:
           at: ~/project/workspace
       - run:
