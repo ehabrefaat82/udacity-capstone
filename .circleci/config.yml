@@ -1,7 +1,25 @@
 version: 2.1
-
+orbs:
+  aws-eks: circleci/aws-eks@2.2.0
+  kubernetes: circleci/kubernetes@1.22
 jobs:
-  build:
+  test-cluster:
+    docker:
+      - image: 'cimg/python:3.10'
+    parameters:
+      cluster-name:
+        description: capstoneEKS
+        type: string
+    steps:
+      - kubernetes/install:
+          kubectl-version: v1.22.0
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: capstoneEKS
+      - run:
+          command: |
+            kubectl get services
+          name: Test cluster
+  build-code:
     docker:
       - image: cimg/openjdk:8.0.345
     working_directory: ~/tmp
@@ -14,7 +32,7 @@ jobs:
             mvn -B -DskipTests clean package
       - store_artifacts:
           path: target/udacity-capstone-0.0.1-SNAPSHOT.jar
-  test:
+  test-code:
     docker:
       - image: cimg/openjdk:8.0.345
     steps:
@@ -24,7 +42,7 @@ jobs:
           command: |
             echo ">---------- test ----------<"
 #            mvn test
-  scan:
+  scan-code:
     docker:
       - image: cimg/base:stable
     steps:
@@ -33,10 +51,9 @@ jobs:
           name: "scan"
           command: |
             echo ">---------- TODO scan ----------<"
-  package:
+  package-build:
     docker:
       - image: cimg/openjdk:8.0.345
-    working_directory: ~/project
     steps:
       - checkout
       - setup_remote_docker:
@@ -48,53 +65,21 @@ jobs:
             set -ex
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             echo $TAG
-            docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/udacity-capstone:$TAG .
-            mkdir -p build_output
-            docker save ${DOCKER_USER}/udacity-capstone:$TAG --output build_output/${CIRCLE_BUILD_NUM}.tar
-#            docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
-#            docker push ehabrefaat82/udacity-capstone:$TAG
-      - persist_to_workspace:
-          root: build_output
-          paths:
-            - '*.tar'
-
-  push:
-    docker:
-      - image: cimg/openjdk:8.0.345
-    working_directory: ~/project
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - checkout
-      - attach_workspace:
-          at: ~/project/workspace
-      - run:
-          name: "push to hub"
-          command: |
-            echo ">---------- push ----------<"
-            set -ex
-            TAG="0.1.${CIRCLE_BUILD_NUM}"
-            echo $TAG
-            docker load --input build_output/${CIRCLE_BUILD_NUM}.tar
+            docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG .
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
-            docker push ${DOCKER_USER}/udacity-capstone:$TAG
-  create-infra:
+            docker push ${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG
+  create-eks:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: "create-infra"
-          command: "echo create-infra"
-  config-infra:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "config-infra"
-          command: "echo config-infra"
-  deploy:
+          name: "  create-eks"
+          command: |
+            echo ">---------- create-eks ----------<"
+            echo "EKS should be create on time, to use cloud formation creating the cluster"
+            echo ".../project/.crcleci/eks>  ./create-stack.sh capstoneEKS eks-config.yaml"
+  deploy-package:
     docker:
       - image: cimg/base:stable
     steps:
@@ -129,32 +114,27 @@ jobs:
 workflows:
   default-workflow:
     jobs:
-      - build
-      - test:
+      - test-cluster
+      - build-code
+      - test-code:
           requires:
-            - build
-      - scan:
+            - build-code
+      - scan-code:
           requires:
-            - test
-      - package:
+            - test-code
+      - package-build:
           requires:
-            - scan
-      - push:
+            - scan-code
+      - create-eks:
           requires:
-            - package
-      - create-infra:
+            - scan-code
+      - deploy-package:
           requires:
-            - scan
-      - config-infra:
-          requires:
-            - create-infra
-      - deploy:
-          requires:
-            - config-infra
-            - push
+            - package-build
+            - create-eks
       - smoke-test:
           requires:
-            - deploy
+            - deploy-package
       - publish:
           requires:
             - smoke-test
