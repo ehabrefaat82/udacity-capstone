@@ -48,7 +48,6 @@ jobs:
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             echo $TAG
             sudo apt -y install jq
-#            curl 'https://circleci.com/api/v1.1/project/github/ehabrefaat82/udacity-capstone/200/artifacts' | jq '.[0]["url"]' | xargs curl -o udacity-capstone-0.0.1-SNAPSHOT.jar
             ls
             docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG .
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
