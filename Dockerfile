@@ -3,7 +3,7 @@
 #EXPOSE 8070
 #ENTRYPOINT ["java","-jar","/udacity-capstone-0.0.1-SNAPSHOT.jar"]
 
-FROM dockerfile/java:oracle-java8
+FROM openjdk:8-alpine
 VOLUME /tmp
 ADD target/udacity-capstone-0.0.1-SNAPSHOT.jar target/app.jar
 RUN bash -c 'touch target/app.jar'
