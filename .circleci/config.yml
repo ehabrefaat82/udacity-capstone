@@ -52,6 +52,7 @@ jobs:
             ls
             cat Dockerfile
             docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG .
+            docker run -p 8070:8070 --name somename -d ${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
             docker push ${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG
   create-eks:
