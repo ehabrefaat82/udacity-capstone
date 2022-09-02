@@ -89,11 +89,11 @@ jobs:
           command: |
             kubectl get services
             ls
-#      - kubernetes/create-or-update-resource:
-#          get-rollout-status: true
-#          resource-file-path: deployment.yaml
-#          resource-name: capstone-deployment
-#          show-kubectl-command: true
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: deployment.yaml
+          resource-name: capstone-deployment
+          show-kubectl-command: true
 
 workflows:
   default-workflow:
