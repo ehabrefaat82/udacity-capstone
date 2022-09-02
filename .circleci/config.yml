@@ -92,7 +92,6 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: deployment.yaml
-          resource-name: default
           show-kubectl-command: true
 
 workflows:
