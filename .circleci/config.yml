@@ -82,6 +82,7 @@ jobs:
             ls
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
+          cluster-name: EKS
           get-rollout-status: true
           resource-file-path: deployment.yaml
           resource-name: capstone-deployment
