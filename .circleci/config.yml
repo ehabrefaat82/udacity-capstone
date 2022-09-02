@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  kubernetes: circleci/kubernetes@1.3.1
+
 jobs:
   build-code:
     docker:
@@ -67,22 +70,6 @@ jobs:
             echo ">---------- create-eks ----------<"
             echo "EKS should be create on time, to use cloud formation creating the cluster"
             echo ".../project/.crcleci/eks>  ./create-stack.sh capstoneEKS eks-config.yaml"
-  deploy-package:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "deploy"
-          command: "echo deploy"
-  smoke-test:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "smoke-test"
-          command: "echo smoke-test"
   publish:
     docker:
       - image: cimg/base:stable
@@ -90,15 +77,15 @@ jobs:
       - checkout
       - run:
           name: "publish"
-          command: "echo publish"
-  clean-up:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "clean-up"
-          command: "echo clean-up"
+          command: |
+            echo ">---------- publish ----------<"
+      - kubernetes/install-kubectl
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: deployment.yaml
+          resource-name: capstone-deployment
+          show-kubectl-command: true
+
 workflows:
   default-workflow:
     jobs:
@@ -115,16 +102,7 @@ workflows:
       - create-eks:
           requires:
             - scan-code
-      - deploy-package:
+      - publish:
           requires:
             - package-build
             - create-eks
-      - smoke-test:
-          requires:
-            - deploy-package
-      - publish:
-          requires:
-            - smoke-test
-      - clean-up:
-          requires:
-            - publish
