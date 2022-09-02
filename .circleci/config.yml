@@ -79,6 +79,7 @@ jobs:
           name: "publish"
           command: |
             echo ">---------- publish ----------<"
+            ls
       - kubernetes/install-kubectl
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
