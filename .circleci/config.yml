@@ -100,21 +100,21 @@ jobs:
 workflows:
   default-workflow:
     jobs:
-      - publish
-#      - build-code
-#      - test-code:
-#          requires:
-#            - build-code
-#      - scan-code:
-#          requires:
-#            - test-code
-#      - package-build:
-#          requires:
-#            - scan-code
-#      - create-eks:
-#          requires:
-#            - scan-code
-#      - publish:
-#          requires:
-#            - package-build
-#            - create-eks
+#      - publish
+      - build-code
+      - test-code:
+          requires:
+            - build-code
+      - scan-code:
+          requires:
+            - test-code
+      - package-build:
+          requires:
+            - scan-code
+      - create-eks:
+          requires:
+            - scan-code
+      - publish:
+          requires:
+            - package-build
+            - create-eks
