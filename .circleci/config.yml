@@ -88,29 +88,31 @@ jobs:
           name: test
           command: |
             kubectl get services
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: deployment.yaml
-          resource-name: capstone-deployment
-          show-kubectl-command: true
+            ls
+#      - kubernetes/create-or-update-resource:
+#          get-rollout-status: true
+#          resource-file-path: deployment.yaml
+#          resource-name: capstone-deployment
+#          show-kubectl-command: true
 
 workflows:
   default-workflow:
     jobs:
-      - build-code
-      - test-code:
-          requires:
-            - build-code
-      - scan-code:
-          requires:
-            - test-code
-      - package-build:
-          requires:
-            - scan-code
-      - create-eks:
-          requires:
-            - scan-code
-      - publish:
-          requires:
-            - package-build
-            - create-eks
+      - publish
+#      - build-code
+#      - test-code:
+#          requires:
+#            - build-code
+#      - scan-code:
+#          requires:
+#            - test-code
+#      - package-build:
+#          requires:
+#            - scan-code
+#      - create-eks:
+#          requires:
+#            - scan-code
+#      - publish:
+#          requires:
+#            - package-build
+#            - create-eks
