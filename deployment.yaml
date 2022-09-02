@@ -27,7 +27,7 @@ spec:
                       - arm64
       containers:
         - name: capstone
-          image: ehabrefaat82/udacity-capstone:1.0.200
+          image: ehabrefaat82/udacity-capstone:1.0.9
           ports:
             - name: http
               containerPort: 8070
