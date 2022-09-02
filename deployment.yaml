@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstone-deployment
-  namespace: capstone-deployment
+  name: capstone-linux-deployment
+  namespace: default
   labels:
-    app: capstone-deployment
+    app: capstone-deployment-linux-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: capstone-deployment
+      app: capstone-deployment-linux-app
   template:
     metadata:
       labels:
-        app: capstone-deployment
+        app: capstone-deployment-linux-app
     spec:
       affinity:
         nodeAffinity:
