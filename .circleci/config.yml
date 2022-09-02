@@ -30,7 +30,7 @@ jobs:
             mvn test
   scan-code:
     docker:
-      - image: cimg/openjdk:8.0.345
+      - image: cimg/openjdk:17.0.4
     steps:
       - checkout
       - run:
