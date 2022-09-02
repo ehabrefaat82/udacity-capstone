@@ -90,7 +90,7 @@ jobs:
             kubectl get services
             ls
       - kubernetes/create-or-update-resource:
-#          get-rollout-status: true
+          get-rollout-status: true
           resource-file-path: deployment.yaml
 #          resource-name: deployment/capstone-deployment
           show-kubectl-command: true
