@@ -56,10 +56,7 @@ jobs:
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             echo $TAG
             sudo apt -y install jq
-            mkdir target
-            curl 'https://circleci.com/api/v1.1/project/github/ehabrefaat82/udacity-capstone/200/artifacts' | jq '.[0]["url"]' | xargs curl -o target/udacity-capstone-0.0.1-SNAPSHOT.jar
-            ls
-            cat Dockerfile
+            curl 'https://circleci.com/api/v1.1/project/github/ehabrefaat82/udacity-capstone/200/artifacts' | jq '.[0]["url"]' | xargs curl -o udacity-capstone-0.0.1-SNAPSHOT.jar
             docker build --build-arg build_number="${CIRCLE_BUILD_NUM}" --tag=${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG .
             docker run -p 8070:8070 --name somename -d ${DOCKER_USER}/${CIRCLE_PROJECT_REPONAME}:$TAG
             docker login --username ${DOCKER_USER} --password ${DOCKER_PASS}
@@ -95,7 +92,7 @@ jobs:
             ls
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: deployment.yaml
+          resource-file-path: deployment2.yaml
           resource-name: deployment/capstone
           show-kubectl-command: true
 
