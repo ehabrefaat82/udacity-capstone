@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -19,7 +20,7 @@ class UdacityCapstoneApplicationTests {
 
     @Test
     void contextLoads() {
-        assertTrue(homeController.Home().equals("App is up"));
+        assertEquals("App is up", homeController.home());
     }
 
 }
