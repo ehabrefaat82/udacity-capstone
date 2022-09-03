@@ -39,7 +39,7 @@ jobs:
             echo ">---------- scan ----------<"
             mvn clean verify sonar:sonar \
               -Dsonar.projectKey=udacity-capstone \
-              -Dsonar.host.url=http://3.83.78.31:9000 \
+              -Dsonar.host.url=http://ec2-3-235-59-11.compute-1.amazonaws.com:9000 \
               -Dsonar.login=sqp_0bca0cc1338a404e323f8e2559bd509f79dc467b
   package-build:
     docker:
