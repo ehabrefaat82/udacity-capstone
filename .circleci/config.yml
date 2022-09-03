@@ -39,7 +39,7 @@ jobs:
             echo ">---------- scan ----------<"
             mvn clean verify sonar:sonar \
               -Dsonar.projectKey=udacity-capstone \
-              -Dsonar.host.url=http://ec2-3-235-59-11.compute-1.amazonaws.com:9000 \
+              -Dsonar.host.url=http://3.235.59.11:9000 \
               -Dsonar.login=sqp_0bca0cc1338a404e323f8e2559bd509f79dc467b
   package-build:
     docker:
@@ -92,28 +92,28 @@ jobs:
             ls
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
-          resource-file-path: deployment2.yaml
+          resource-file-path: deployment.yaml
           resource-name: deployment/capstone
           show-kubectl-command: true
 
 workflows:
   default-workflow:
     jobs:
-#      - publish
-      - build-code
-      - test-code:
-          requires:
-            - build-code
-      - scan-code:
-          requires:
-            - test-code
-      - package-build:
-          requires:
-            - scan-code
-      - create-eks:
-          requires:
-            - scan-code
-      - publish:
-          requires:
-            - package-build
-            - create-eks
+      - publish
+#      - build-code
+#      - test-code:
+#          requires:
+#            - build-code
+#      - scan-code:
+#          requires:
+#            - test-code
+#      - package-build:
+#          requires:
+#            - scan-code
+#      - create-eks:
+#          requires:
+#            - scan-code
+#      - publish:
+#          requires:
+#            - package-build
+#            - create-eks
